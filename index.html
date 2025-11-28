@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Portafolio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background: linear-gradient(to bottom, #0F0F0F, #1B1B1B); /* Degradado vertical base */
+            color: #FFFFFF; /* Texto blanco puro */
+            margin: 0; 
+            padding: 0; 
+            position: relative;
+            overflow-x: hidden; /* Evitar scroll horizontal */
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, #0A0A0A, #2A2A2A); /* Degradado horizontal suave: más oscuro a la izquierda, más claro a la derecha */
+            opacity: 0.3; /* Baja opacidad para no sobrecargar */
+            z-index: -3;
+        }
+        /* Líneas decorativas laterales */
+        .decorative-line-left, .decorative-line-right {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 1px;
+            background-color: rgba(255, 255, 255, 0.1); /* Blanco con baja opacidad */
+            z-index: -1;
+        }
+        .decorative-line-left {
+            left: 5%; /* Posición a la izquierda */
+        }
+        .decorative-line-right {
+            right: 5%; /* Posición a la derecha */
+        }
+        /* Blobs orgánicos difuminados en costados */
+        .blob-left1, .blob-left2, .blob-right1, .blob-right2, .blob-bottom1, .blob-bottom2 {
+            position: absolute;
+            border-radius: 50%; /* Formas circulares para blobs orgánicos con blur */
+            filter: blur(120px); /* Blur muy amplio para efecto difuminado y suave */
+            z-index: -2;
+            opacity: 0.15; /* Opacidad baja para iluminación ambiental sutil */
+        }
+        /* Blobs en la izquierda */
+        .blob-left1 {
+            background-color: #004D40; /* Verde azulado oscuro */
+            width: 400px;
+            height: 400px;
+            top: 20%;
+            left: -15%; /* Extendido a la izquierda */
+        }
+        .blob-left2 {
+            background-color: #00695C; /* Variación verde azulado más intenso */
+            width: 350px;
+            height: 350px;
+            top: 60%;
+            left: -10%; /* Extendido a la izquierda */
+        }
+        /* Blobs en la derecha */
+        .blob-right1 {
+            background-color: #00796B; /* Otro tono verde azulado oscuro */
+            width: 380px;
+            height: 380px;
+            top: 30%;
+            right: -12%; /* Extendido a la derecha */
+        }
+        .blob-right2 {
+            background-color: #004D40; /* Repetir tono para variación */
+            width: 320px;
+            height: 320px;
+            top: 70%;
+            right: -8%; /* Extendido a la derecha */
+        }
+        /* Blobs en la parte inferior */
+        .blob-bottom1 {
+            background-color: #00695C; /* Tono verde azulado */
+            width: 450px;
+            height: 450px;
+            bottom: -10%;
+            left: 20%; /* Posicionado en la parte inferior izquierda */
+        }
+        .blob-bottom2 {
+            background-color: #00897B; /* Tono ligeramente más claro pero aún oscuro */
+            width: 400px;
+            height: 400px;
+            bottom: -15%;
+            right: 25%; /* Posicionado en la parte inferior derecha */
+        }
+        /* Header Superior con efecto glass */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.08); /* Glass suave */
+            backdrop-filter: blur(10px); /* Blur para efecto glass */
+            border: 1px solid rgba(255, 255, 255, 0.15); /* Borde glass muy fino */
+            border-radius: 0 0 15px 15px; /* Bordes redondeados abajo */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra difusa ligera */
+            z-index: 100;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 300;
+        }
+        /* Contenedor Principal del Contenido */
+        .main-content {
+            margin-top: 80px; /* Espacio para el header fijo */
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            background: rgba(255, 255, 255, 0.08); /* Glass suave */
+            backdrop-filter: blur(5px); /* Ligero blur */
+            border: 1px solid rgba(255, 255, 255, 0.15); /* Borde glass muy fino */
+            border-radius: 15px; /* Bordes redondeados */
+            padding: 40px; /* Padding amplio */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+            position: relative;
+            z-index: 10;
+        }
+        .hero { 
+            text-align: center; 
+            padding: 20px 0; 
+            background-color: transparent; 
+        }
+        .hero img { 
+            border-radius: 50%; 
+            width: 120px; 
+            height: 120px;
+            border: 2px solid rgba(255, 255, 255, 0.15); /* Borde sutil en blanco */
+        }
+        .portfolio-icons { 
+            display: flex; 
+            justify-content: center; 
+            gap: 30px; 
+            margin: 20px 0; 
+        }
+        .portfolio-icons .icon { 
+            font-size: 50px; 
+            cursor: pointer; 
+            transition: transform 0.2s; 
+            color: #FFFFFF; /* Iconos en blanco para contraste */
+            background: none; /* Sin fondo para que parezca botón limpio */
+            border: none; /* Sin borde */
+        }
+        .portfolio-icons .icon:hover { 
+            transform: scale(1.1); 
+            color: rgba(255, 255, 255, 0.8); /* Hover sutil */
+        }
+        .modal-content { 
+            background: rgba(255, 255, 255, 0.08); /* Glass suave para tarjetas */
+            color: #FFFFFF; /* Texto blanco */
+            border: 1px solid rgba(255, 255, 255, 0.15); /* Borde glass muy fino */
+            backdrop-filter: blur(10px); /* Efecto glass adicional */
+            border-radius: 10px; 
+        }
+        .modal-header { 
+            border-bottom: none; 
+        }
+        .modal-body { 
+            padding: 20px; 
+        }
+        h1, h2, h3 { 
+            font-weight: 300; /* Fuente ligera */
+        }
+        p, ul { 
+            line-height: 1.6; 
+        }
+        .gallery { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 20px; 
+            margin: 20px 0; 
+        }
+        .gallery-item { 
+            text-align: center; 
+        }
+        .gallery-item img { 
+            width: 100%; 
+            height: auto; 
+            border-radius: 5px; 
+        }
+        .contact { 
+            text-align: center; 
+            padding: 20px; 
+            background: rgba(255, 255, 255, 0.08); /* Glass suave */
+            border: 1px solid rgba(255, 255, 255, 0.15); /* Borde glass */
+            border-radius: 10px; 
+        }
+        
+          /* Contenedor general para "Otros Trabajos" */
+  .otros-trabajos-list {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-left: 0;
+    list-style: none;
+  }
+  .otros-trabajos-item {
+    max-width: 180px;
+    flex: 1 1 150px; /* flexible, con base mínima 150px */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease;
+    cursor: default;
+  }
+  .otros-trabajos-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  }
+
+.otros-trabajos-list {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+.otros-trabajos-item {
+  max-width: 180px;
+  flex: 1 1 150px;
+  text-align: center;
+  cursor: pointer;
+}
+.otros-trabajos-item img.zoomable-image {
+  width: 100%;
+  height: 150px;
+  border-radius: 12px;
+  object-fit: contain;
+  transition: transform 0.25s ease;
+}
+.otros-trabajos-item:hover img.zoomable-image {
+  transform: scale(1.05);
+}
+.otros-trabajos-texto {
+  color: white;
+  font-size: 0.8rem;
+  margin-top: 6px;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.85);
+  display: none; /* oculto por defecto */
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+  padding: 20px; /* Margen interno para que no toque los bordes */
+}
+.modal-overlay.active {
+  display: flex;
+}
+.modal-content {
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  outline: none;
+}
+#modal-image {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 12px;
+  display: block;
+  margin: auto;
+  object-fit: contain; /* Asegura que la imagen se vea completa sin recortar */
+}
+/* Media queries para adaptar tamaño por dispositivo */
+@media (min-width: 1024px) { /* Desktop */
+  #modal-image {
+    max-width: 70vw; /* No más del 70% del ancho de la pantalla */
+    max-height: 70vh; /* No más del 70% del alto */
+  }
+}
+@media (min-width: 768px) and (max-width: 1023px) { /* Tablet */
+  #modal-image {
+    max-width: 80vw; /* 80% del ancho */
+    max-height: 80vh; /* 80% del alto */
+  }
+}
+@media (max-width: 767px) { /* Móvil */
+  #modal-image {
+    max-width: 90vw; /* 90% del ancho para no ser muy pequeña */
+    max-height: 90vh; /* 90% del alto */
+  }
+}
+#modal-close {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: #222;
+  color: white;
+  border: none;
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1;
+  padding: 5px 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 0 10px rgba(255,255,255,0.2);
+  transition: background 0.3s;
+}
+#modal-close:hover {
+  background: #555;
+}
+
+        /* Estilos para la nueva sección de herramientas */
+        .tools-section {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .tool-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .tool-item img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+        .tool-item p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        
+        /* Líneas separadoras */
+        .section-separator {
+            height: 1px;
+            background-color: rgba(255, 255, 255, 0.15); /* Blanco con 15% opacidad para consistencia */
+            margin: 30px 0;
+        }
+   .portfolio-icons {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 20px 0;
+  }
+  .image-button {
+    position: relative;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+    width: 140px; /* Ajusta el tamaño según convenga */
+    height: 140px; /* Ajusta el tamaño según convenga */
+    border-radius: 15px;
+    overflow: hidden;
+  }
+  .image-button img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .image-button-text {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 8px 6px;
+  text-align: center;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), transparent);
+  border-radius: 0 0 15px 15px;
+  pointer-events: none;
+}
+        /* Botón "Ver más proyectos" en modales */
+        .modal-btn {
+            display: block;
+            margin: 20px auto 0; /* Centrado horizontal, margen superior para separación */
+            padding: 10px 20px;
+            background: rgba(64, 64, 64, 0.5); /* Gris oscuro semitransparente */
+            backdrop-filter: blur(5px); /* Glassmorphism sutil */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #FFFFFF;
+            text-decoration: none;
+            font-weight: 300;
+            text-align: center;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+        .modal-btn:hover {
+            background: rgba(64, 64, 64, 0.7); /* Aclarado sutil en hover */
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Brillo suave */
+        }
+    </style>
+</head>
+<body>
+    <!-- Líneas decorativas laterales -->
+    <div class="decorative-line-left"></div>
+    <div class="decorative-line-right"></div>
+
+    <!-- Blobs orgánicos difuminados en costados -->
+    <div class="blob-left1"></div>
+    <div class="blob-left2"></div>
+    <div class="blob-right1"></div>
+    <div class="blob-right2"></div>
+    <div class="blob-bottom1"></div>
+    <div class="blob-bottom2"></div>
+
+    <!-- Header Superior -->
+    <header class="header">
+        <h1>Mi Portafolio</h1>
+    </header>
+
+    <!-- Contenedor Principal del Contenido -->
+    <div class="main-content">
+        <!-- Sección Hero: Foto y Nombre -->
+        <section class="hero">
+            <img src="tu-foto.jpg" alt="Tu Foto"> <!-- Reemplaza con la URL o ruta de tu foto -->
+            <h1>Kristoff Salvador Carvajal Cortez</h1>
+        </section>
+
+        <div class="section-separator"></div>
+
+        <!-- Sección Introducción: Sobre Mí -->
+        <section>
+            <h2>Sobre Mí</h2>
+            <p>Mi nombre es Kristoff Carvajal,  un estudiante de Diseño Gráfico actualmente cursando 8° Tetramestre en la universidad lux me considereo una persona creativa la cual se puede adaptar a la mayoria de los proyectos que me han dado como el realizar posters o pastas frontales para libros para estos mismo utilice los programas mencionados en competencias</p>
+        </section>
+
+        <div class="section-separator"></div>
+
+        <!-- Sección Trabajos Más Destacados -->
+        <section>
+            <h2>Trabajos Más Destacados</h2>
+            <div class="gallery">
+                <div class="gallery-item">
+                    <img src="destacado1.jpg" alt="Proyecto Destacado 1"> <!-- Reemplaza con imagen -->
+                    <p><strong>Proyecto 1:</strong> [Breve descripción, contexto, proceso y propósito].</p>
+                </div>
+                <div class="gallery-item">
+                    <img src="destacado2.jpg" alt="Proyecto Destacado 2"> <!-- Reemplaza con imagen -->
+                    <p><strong>Proyecto 2:</strong> [Breve descripción, contexto, proceso y propósito].</p>
+                </div>
+                <!-- Agrega más destacados según necesites -->
+            </div>
+        </section>
+
+        <div class="section-separator"></div>
+
+<!-- Reemplazo de los botones emoji por imagen + texto con fondo degradado -->
+<div class="portfolio-icons">  <!-- Botón Fotografía -->
+  <button 
+    type="button" 
+    class="image-button" 
+    data-bs-toggle="modal" 
+    data-bs-target="#modal1" 
+    aria-label="Abrir modal de Fotografía">
+    <img src="img/fotografia-logo.png" alt="Fotografía" />
+    <div class="image-button-text">Fotografía</div>
+  </button>
+  <!-- Botón Logotipos -->
+  <button 
+    type="button" 
+    class="image-button" 
+    data-bs-toggle="modal" 
+    data-bs-target="#modal2" 
+    aria-label="Abrir modal de Logotipos">
+    <img src="img/logos-p.png" alt="Logotipos" />
+    <div class="image-button-text">Logotipos</div>
+  </button>
+  <!-- Botón Cubierta -->
+    <button 
+    type="button" 
+    class="image-button" 
+    data-bs-toggle="modal" 
+    data-bs-target="#modal3" 
+    aria-label="Abrir modal de Cubierta">
+    <img src="img/Portafolio-pastas-portada.png" alt="Cubierta" />
+    <div class="image-button-text">Cubierta de libros</div>
+  </button>
+    <!-- Botón Tarjetas -->
+    <button 
+    type="button" 
+    class="image-button" 
+    data-bs-toggle="modal" 
+    data-bs-target="#modal4" 
+    aria-label="Abrir modal de Tarjetas">
+    <img src="img/Poratfolio2.png" alt="Tarjetas" />
+    <div class="image-button-text">Tarjetas de juego</div>
+  </button>
+
+      <!-- Botón Revista -->
+    <button 
+    type="button" 
+    class="image-button" 
+    data-bs-toggle="modal" 
+    data-bs-target="#modal5" 
+    aria-label="Abrir modal de Revista">
+    <img src="img/Portada.png" alt="Revista" />
+    <div class="image-button-text">Revista de anime</div>
+  </button>
+</div>
+        <div class="section-separator"></div>
+
+        <!-- Sección Trabajos Secundarios -->
+<!-- HTML: Lista de trabajos con imagenes clicables -->
+<section>
+  <h2>Otros Trabajos</h2>
+  <ul class="otros-trabajos-list">
+    <li class="otros-trabajos-item">
+      <img src="img/deku y bakugou.krz-autosave.jpg" alt="Ilustración Deku y Bakugou" class="zoomable-image" />
+      <div class="otros-trabajos-texto">Ilustración digital de dos personajes de anime conocidos</div>
+    </li>
+     <ul class="otros-trabajos-list">
+    <li class="otros-trabajos-item">
+      <img src="img/cerbero.jpg" alt="Ilustración cerbero" class="zoomable-image" />
+      <div class="otros-trabajos-texto">Ilustración digital de cerbero con el simbolo de hades como representacion</div>
+    </li>
+    <!-- Puedes agregar más items -->
+  </ul>
+</section>
+<!-- Modal para mostrar la imagen en grande -->
+<div id="image-modal" class="modal-overlay" tabindex="-1" aria-modal="true" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+  <div class="modal-content">
+    <button id="modal-close" aria-label="Cerrar ventana">&times;</button>
+    <img id="modal-image" src="" alt="">
+  </div>
+</div>
+                <!-- Agrega más según necesites -->
+            </ul>
+        </section>
+                <div class="section-separator"></div>
+
+                <!-- Nueva Sección: Herramientas y Competencias -->
+        <section class="tools-section">
+            <h2>Herramientas y Competencias</h2>
+            <div class="tools-grid">
+                <div class="tool-item">
+                    <img src="img/Adobe_Photoshop_CC_icon.svg.png" alt="Photoshop Logo">
+                    <p><strong>Photoshop</strong><br>Nivel Básico - Intermedio</p>
+                </div>
+
+                <div class="tool-item">
+                    <img src="img/images-removebg-preview.png" alt="Illustrator Logo">
+                    <p><strong>Illustrator</strong><br>Nivel Básico - Intermedio</p>
+                </div>
+
+                <div class="tool-item">
+                    <img src="img/Adobe_InDesign_CC_icon.svg.png" alt="InDesign Logo">
+                    <p><strong>InDesign</strong><br>Nivel Intermedio</p>
+                </div>
+
+                <div class="tool-item">
+                    <img src="img/descarga-removebg-preview.png" alt="Lightroom Logo">
+                    <p><strong>Lightroom</strong><br>Nivel Básico - Intermedio</p>
+                </div>
+
+                <div class="tool-item">
+                    <img src="img/Calligrakrita-base.svg.png" alt="Krita Logo">
+                    <p><strong>Krita</strong><br>Nivel Básico - Intermedio</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Contacto -->
+        <section class="contact">
+            <h2>Contacto</h2>
+            <p>Email: salvador.carvajal@hotmail.com</p>
+            <p>Teléfono: 8129200544</p>
+            <p>Behance: <a href="https://www.behance.net/kristofcarvaja" target="_blank" style="color: #FFFFFF; text-decoration: underline;">https://www.behance.net/kristofcarvaja</a></p>
+            <!-- Agrega más info de contacto -->
+        </section>
+    </div>
+
+    <!-- Modales para Introducciones y Galerías -->
+    <div class="modal fade" id="modal1" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Fotografía</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Esta sección incluye mis trabajos en fotografía, desde retratos hasta paisajes. Aquí muestro mi enfoque en la composición y la luz natural.</p>
+                    <h6>Galería Destacada:</h6>
+                    <div class="gallery">
+                        <div class="gallery-item">
+                            <img src="foto1.jpg" alt="Fotografía 1"> <!-- Reemplaza con imagen -->
+                            <p><strong>Contexto:</strong> [Descripción del contexto]. <strong>Proceso:</strong> [Proceso de captura]. <strong>Propósito:</strong> [Propósito].</p>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="foto2.jpg" alt="Fotografía 2"> <!-- Reemplaza con imagen -->
+                            <p><strong>Contexto:</strong> [Descripción]. <strong>Proceso:</strong> [Proceso]. <strong>Propósito:</strong> [Propósito].</p>
+                        </div>
+                        <!-- Agrega más fotos -->
+                    </div>
+                    <a href="https://www.behance.net/kristofcarvaja" target="_blank" class="modal-btn">Ver más proyectos de Fotografía</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal2" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Logotipos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Explora mis creaciones en Logotipos, incluyendo ilustraciones y ediciones.</p>
+                    <h6>Galería Destacada:</h6>
+                    <div class="gallery">
+                        <div class="gallery-item">
+                            <img src="img/PixelCakes.png" alt="Arte 1"> <!-- Reemplaza con imagen -->
+                            <p><strong>Logotipo realizado para una pastelería web ficticia en el cual se vende la tarta icónica del juego popular minecraft.
+                        </div>
+                        <div class="gallery-item">
+                            <img src="img/descarga-(2).jpg" alt="Arte 2"> <!-- Reemplaza con imagen -->
+                            <p><strong>Logotipo para un poster ficticio de Tecate pal norte. 
+                        </div>
+                        <!-- Agrega más arte -->
+                    </div>
+                    <a href="https://www.behance.net/portfolio/editor?project_id=237231595" target="_blank" class="modal-btn">Ver más proyectos de Logotipos</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal3" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cubierta de libros</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Esta sección incluye mis trabajos en cubierta de libros. Aquí muestro mi enfoque en la composición y el diseño que pudo abertenido despues de sacar sus peliculas o series.</p>
+                    <h6>Galería Destacada:</h6>
+                    <div class="gallery">
+                        <div class="gallery-item">
+                            <img src="img/Pastas-para-libros2.jpg" alt="Cubierta1"> <!-- Reemplaza con imagen -->
+                            <p><strong>Ilustración realizada en ilustrador con el apoyo del programa Photoshop para eliminación de fondo como una pasta del libro basada en el de Percy Jackson y los Dioses del Olimpo.</p>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="img/Pastas-para-libros3.jpg" alt="Cubierta2"> <!-- Reemplaza con imagen -->
+                            <p><strong>Ilustración realizada en ilustrador con el apoyo del programa Photoshop para eliminación de fondo como una pasta del libro basada en el de Harry Potter y el prisionero de askaban.</p>
+                        </div>
+                        <!-- Agrega más Cubierta -->
+                    </div>
+                    <a href="https://www.behance.net/portfolio/editor?project_id=236294347" target="_blank" class="modal-btn">Ver más proyectos de Cubierta</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="modal fade" id="modal4" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tarjetas</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Esta sección incluye mis trabajos en Diseño de tarjetas de juego tipo test para fanaticos del anime, estos mismos diseños se pueden refljar desde en retratos hasta presentacion del personaje. Aquí muestro mi enfoque en la composición y el detalle en el diseño de cada uno dado que tienen un diseño unico representativo de su personaje.</p>
+                    <p>Ilustracion tipo poster realizado en Photoshop en el cual se realiza a vace de edicion y recorte de imagen con un fodo representativo del personaje principal integrado con Ilustrador junto con el nombre de la serie a la que pertenece.</p>
+                    <h6>Galería Destacada:</h6>
+                    <div class="gallery">
+                        <div class="gallery-item">
+                            <img src="img/Power-revista.png" alt="Tarjetas 1"> <!-- Reemplaza con imagen -->
+                        </div>
+                        <div class="gallery-item">
+                            <img src="img/Poratfolio2c.png" alt="Tarjetas 2"> <!-- Reemplaza con imagen -->
+                        </div>
+
+                    </div>
+                    <a href="https://www.behance.net/portfolio/editor?project_id=236296179" target="_blank" class="modal-btn">Ver más proyectos de Tarjetas</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+            <div class="modal fade" id="modal5" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Revista</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Esta sección incluye mis trabajos en Diseño de tarjetas de juego tipo test para fanaticos del anime, estos mismos diseños se pueden refljar desde en retratos hasta presentacion del personaje. Aquí muestro mi enfoque en la composición y el detalle en el diseño de cada uno dado que tienen un diseño unico representativo de su personaje.</p>
+                    <div class="gallery">
+                        <div class="gallery-item">
+                            <img src="img/Revista.jpg" alt="Revista 1"> <!-- Reemplaza con imagen -->
+                    <p>Ilustracion tipo poster realizado en Photoshop en el cual se realiza a vace de edicion y recorte de imagen con 2 fodos representativos del personaje principal integrado con Ilustrador junto con el nombre de la serie a la que pertenece para realizar todas las imagenes y finalmente se junto todo en InDesign en el cual se acomodo pagina por pagina con el texto sobre datos correspondientes a cada personaje el cual es considerado por los fanaticos el favorito de toda la serie.</p>
+                        </div>
+
+                    </div>
+                    <a href="https://www.behance.net/portfolio/editor?project_id=237230931" target="_blank" class="modal-btn">Ver más sobre mi Revista</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>  // Obtener elementos
+  const modal = document.getElementById('image-modal');
+  const modalImg = document.getElementById('modal-image');
+  const modalCloseBtn = document.getElementById('modal-close');
+  // Al hacer clic en cada imagen con clase zoomable-image, abrir modal con la imagen grande
+  document.querySelectorAll('.zoomable-image').forEach(img => {
+    img.addEventListener('click', () => {
+      modalImg.src = img.src;
+      modalImg.alt = img.alt || '';
+      modal.classList.add('active');
+      modal.focus();
+    });
+  });
+    // Cerrar modal al hacer clic en el botón
+  modalCloseBtn.addEventListener('click', () => {
+    modal.classList.remove('active');
+    modalImg.src = '';
+  });
+    // Cerrar modal al presionar Escape
+  window.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+      modal.classList.remove('active');
+      modalImg.src = '';
+    }
+  });
+  </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
